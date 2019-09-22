@@ -1,0 +1,2 @@
+cron_last_epoch_time_this_line_was_supposedly_executed:
+	gcc -o cron_last_epoch_time_this_line_was_supposedly_executed cron_last_epoch_time_this_line_was_supposedly_executed.c ccronexpr.c
