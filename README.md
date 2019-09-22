@@ -11,7 +11,7 @@ This program outputs to stdio the epoch time at which a given user
   which to start.
 
 ## Example:
-     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800<br/>
+     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800
      This outputs: 1568930400 disable_wifi.sh
 
 ## Dependencies: 
