@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     beginning_of_next_word_boundary = 0;
     word_boundary_pos = 0;
     err = NULL;
-    if (argc == 2 && *argv[1] != NULL && *(argv[1] + 1) != NULL && argv[1][0] == '-' && argv[1][1] == 'h') {
+    if (argc == 2 && *argv[1] != NULL && (argv[1][0] == '-' || argv[1][0] == 'h') ) {
 	printf("\n");
 	printf("     This program outputs to stdio the epoch time at which a given user\n");
 	printf("     crontab expression was supposedly last executed, in addition to\n");
@@ -90,10 +90,16 @@ int main(int argc, char *argv[]) {
 	strcat(cron_line_schedule,argv[1]);
 	for (i=0;i<6;i++) {
 	    beginning_of_next_word_boundary = position_of_beginning_of_next_word_boundary(cron_line_schedule, word_boundary_pos);
+	    
 	    if (beginning_of_next_word_boundary != -1) {
 		last_word_boundary_pos = word_boundary_pos;
 		word_boundary_pos = beginning_of_next_word_boundary;
-	    }
+	
+	    } else if (i<5) {
+		free(cron_line_disposition);
+		free(cron_line_schedule);
+		exit(0);
+	    }		     
 	} 
 	if (beginning_of_next_word_boundary != -1) {
 	    last_word_boundary_pos = position_of_end_of_next_word_boundary(cron_line_schedule,last_word_boundary_pos);
