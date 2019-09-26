@@ -175,6 +175,10 @@ int main(int argc, char *argv[]) {
 	printf("     delimited by double quotes, passed as an argument.  Optionally, a\n");
 	printf("     second argument may be supplied specifying the epoch time from\n");
 	printf("     which to start.  BTW user crontab expressions dont have seconds fields.\n");
+	printf("     Also, if the starting time is a malformed iso8601 datetime, such as\n");
+	printf("     9999-99-99T99:99, then current time is assumed, but the prev time\n");
+	printf("     outputted to stdio will be in iso8601 format.\n");
+
 	printf("\n");
 	printf("     Example:\n");
 	printf("        ./cron_last_epoch_time_this_line_was_supposedly_executed \"0 22 * * mon,tue,wed,thu,fri disable_wifi.sh\" 1569016800\n");
