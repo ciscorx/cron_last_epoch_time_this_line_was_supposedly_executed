@@ -59,7 +59,13 @@ int position_of_end_of_next_word_boundary(char* string, int initial_pos) {
     return pos;
 }
 
-/* The following function tries to parse a datetime string of the form YYYY-MM-DDTHH:MM or YYYYMMDDTHHMM or "YYYYMMDD HHMM", ignoring the seconds field if present, returning 0 if the string passed is a malformed datetime string, and 1 if it is a valid iso8601 datetime string, else it returns -1 for neither.   */
+/* The following function tries to parse a datetime string of the form
+ *    YYYY-MM-DDTHH:MM or YYYYMMDDTHHMM or "YYYYMMDD HHMM", ignoring
+ *    the seconds field if present, returning 0 if the string passed
+ *    is a malformed datetime string, and 1 if it is a valid iso8601
+ *    datetime string, else it returns -1 for neither.  
+ *******************************************************************/
+
 int try_to_parse_string_by_iso8601(char* string, struct tm* ts) {
     int strlength;
     char* time_delimiter_pos;
@@ -206,6 +212,7 @@ int main(int argc, char *argv[]) {
 	    } else if (i<5) {
 		free(cron_line_disposition);
 		free(cron_line_schedule);
+		free(strftime_result);
 		exit(1);
 	    }		     
 	} 
