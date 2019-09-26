@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
 	    } else if (i<5) {
 		free(cron_line_disposition);
 		free(cron_line_schedule);
-		exit(0);
+		exit(1);
 	    }		     
 	} 
 	if (beginning_of_next_word_boundary != -1) {
