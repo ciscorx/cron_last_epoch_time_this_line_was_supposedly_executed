@@ -12,7 +12,7 @@
 **  is in iso8601 then the output will also be in iso8601 format; if
 **  the starting time is a malformed iso8601 datetime, such as
 **  9999-99-99T99:99, then current time is assumed, but the prev time
-**  outputted to stdio will be in iso8601 format.
+**  outputted to stdio will be in iso8601 format.  All times are local not GMT
 **
 **  Examples:
 **     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800
@@ -184,6 +184,7 @@ int main(int argc, char *argv[]) {
 	printf("     Also, if the starting time is a malformed iso8601 datetime, such as\n");
 	printf("     9999-99-99T99:99, then current time is assumed, but the prev time\n");
 	printf("     outputted to stdio will be in iso8601 format.\n");
+	printf("     All times are local, not GMT\n");
 
 	printf("\n");
 	printf("     Example:\n");
@@ -266,7 +267,7 @@ int main(int argc, char *argv[]) {
 	else
 	    printf("%lld\n", (long long) prev);
     else {
-	strftime(strftime_result,100,"%FT%H:%M",&ts);
+	strftime(strftime_result,100,"%FT%H:%M:00Z",&ts);
 	if (beginning_of_next_word_boundary != -1)
 	    printf("%s %s\n", strftime_result, cron_line_disposition);
 	else

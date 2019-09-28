@@ -12,7 +12,7 @@ Outputs to stdio the epoch time at which a given user crontab expression was sup
  is in iso8601 then the output will also be in iso8601 format; if
  the starting time is a malformed iso8601 datetime, such as
  9999-99-99T99:99, then current time is assumed, but the prev time
- outputted to stdio will be in iso8601 format.
+ outputted to stdio will be in iso8601 format.  All times are local, not GMT.
 
 
 ## Example:
