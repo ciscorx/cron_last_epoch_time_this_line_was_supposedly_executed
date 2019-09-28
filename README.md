@@ -1,4 +1,5 @@
 # cron_last_epoch_time_this_line_was_supposedly_executed
+
 Outputs to stdio the epoch time at which a given user crontab expression was supposedly last executed.
 
 ## Description:
@@ -13,14 +14,14 @@ Outputs to stdio the epoch time at which a given user crontab expression was sup
  the starting time is a malformed iso8601 datetime, such as
  9999-99-99T99:99, then current time is assumed, but the prev time
  outputted to stdio will be in iso8601 format.  All times are local, not GMT.
-
+ For next cron scheduled datetime see cron_next_epoch_time_this_line_should_execute.c
 
 ## Example:
      ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800
      This outputs: 1568948400 disable_wifi.sh
 
      ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
-     This outputs: 2019-02-07T22:00 disable_wifi.sh
+     This outputs: 2019-02-07T22:00:00Z disable_wifi.sh
 
 ## Dependencies: 
       ccronexpr.c borrowed from https://github.com/staticlibs/ccronexpr

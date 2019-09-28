@@ -1,9 +1,9 @@
 /**********************************************************************
-**  cron_last_epoch_time_this_line_was_supposedly_executed.c         **
+**  cron_next_epoch_time_this_line_should_execute.c                 **
 **                                                                   **
 ** 
 **  This program outputs to stdio the epoch time at which a given user
-**  crontab expression was supposedly last executed, in addition to
+**  crontab expression will supposedly next execute, in addition to
 **  the disposition element of the cron expression, if present.  The
 **  expression should be comprised of one line from a user crontab
 **  delimited by double quotes, passed as an argument.  Optionally, a
@@ -15,18 +15,18 @@
 **  outputted to stdio will be in iso8601 format.  All times are local not GMT
 **
 **  Examples:
-**     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800
-**     This outputs: 1568948400 disable_wifi.sh
+**     ./cron_next_epoch_time_this_line_should_execute "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 1569016800
+**     This outputs: 1569034800 disable_wifi.sh
 **
-**     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
-**     This outputs: 2019-02-07T22:00:00Z disable_wifi.sh
+**     ./cron_next_epoch_time_this_line_should_execute "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
+**     This outputs: 2019-02-08T22:00:00Z disable_wifi.sh
 **
 **
 **  Dependencies: 
 **      ccronexpr.c borrowed from https://github.com/staticlibs/ccronexpr
 **
 **  To compile under linux:  
-**      gcc -DCRON_USE_LOCAL_TIME -o cron_last_epoch_time_this_line_was_supposedly_executed cron_last_epoch_time_this_line_was_supposedly_executed.c ccronexpr.c
+**      gcc -DCRON_USE_LOCAL_TIME -o cron_next_epoch_time_this_line_should_execute cron_next_epoch_time_this_line_should_execute.c ccronexpr.c
 ***********************************************************************/
 #include "ccronexpr.h"
 #include <stdlib.h>
@@ -189,10 +189,10 @@ int main(int argc, char *argv[]) {
 	printf("\n");
 	printf("     Example:\n");
 	printf("        ./cron_last_epoch_time_this_line_was_supposedly_executed \"0 22 * * mon,tue,wed,thu,fri disable_wifi.sh\" 1569016800\n");
-	printf("        This outputs: 1568948400 disable_wifi.sh\n");
+	printf("        This outputs: 1569034800 disable_wifi.sh\n");
 	printf("\n");
 	printf("        ./cron_last_epoch_time_this_line_was_supposedly_executed \"0 22 * * mon,tue,wed,thu,fri disable_wifi.sh\" 2019-02-08T12:11\n");
-        printf("        This outputs: 2019-02-07T21:00:00Z disable_wifi.sh\n");
+        printf("        This outputs: 2019-02-08T22:00:00Z disable_wifi.sh\n");
 	exit(0);
     }
 
@@ -258,7 +258,7 @@ int main(int argc, char *argv[]) {
     
     cron_parse_expr(cron_line_schedule, &expr, &err);
 
-    time_t prev = cron_prev(&expr, cur);  /* if you want next epoch time instead of previous, simply change cron_prev to cron_next  */
+    time_t prev = cron_next(&expr, cur);  /* if you want the previous epoch time instead of next, simply change cron_next to cron_prev  */
     ts = *localtime(&prev);
 
     if (use_iso8601_datetime_format == 0) 
