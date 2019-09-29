@@ -19,7 +19,7 @@
 **     This outputs: 1569034800 disable_wifi.sh
 **
 **     ./cron_next_epoch_time_this_line_should_execute "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
-**     This outputs: 2019-02-08T22:00:00Z disable_wifi.sh
+**     This outputs: 2019-02-08T22:00:00 disable_wifi.sh
 **
 **
 **  Dependencies: 
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
 	printf("        This outputs: 1569034800 disable_wifi.sh\n");
 	printf("\n");
 	printf("        ./cron_last_epoch_time_this_line_was_supposedly_executed \"0 22 * * mon,tue,wed,thu,fri disable_wifi.sh\" 2019-02-08T12:11\n");
-        printf("        This outputs: 2019-02-08T22:00:00Z disable_wifi.sh\n");
+        printf("        This outputs: 2019-02-08T22:00:00 disable_wifi.sh\n");
 	exit(0);
     }
 
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]) {
 	else
 	    printf("%lld\n", (long long) prev);
     else {
-	strftime(strftime_result,100,"%FT%H:%M:00Z",&ts);
+	strftime(strftime_result,100,"%FT%H:%M:00",&ts);
 	if (beginning_of_next_word_boundary != -1)
 	    printf("%s %s\n", strftime_result, cron_line_disposition);
 	else

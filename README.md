@@ -21,7 +21,7 @@ Outputs to stdio the epoch time at which a given user crontab expression was sup
      This outputs: 1568948400 disable_wifi.sh
 
      ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
-     This outputs: 2019-02-07T22:00:00Z disable_wifi.sh
+     This outputs: 2019-02-07T22:00:00 disable_wifi.sh
 
 ## Dependencies: 
       ccronexpr.c borrowed from https://github.com/staticlibs/ccronexpr

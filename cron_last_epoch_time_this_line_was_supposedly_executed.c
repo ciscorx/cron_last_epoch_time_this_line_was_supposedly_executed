@@ -19,7 +19,7 @@
 **     This outputs: 1568948400 disable_wifi.sh
 **
 **     ./cron_last_epoch_time_this_line_was_supposedly_executed "0 22 * * mon,tue,wed,thu,fri disable_wifi.sh" 2019-02-08T12:11
-**     This outputs: 2019-02-07T22:00:00Z disable_wifi.sh
+**     This outputs: 2019-02-07T22:00:00 disable_wifi.sh
 **
 **
 **  Dependencies: 
@@ -125,7 +125,11 @@ int try_to_parse_string_by_iso8601(char* string, struct tm* ts) {
 	if (year >= 1900 && year <= 2038 && month >= 1 && month <= 12 && day >= 1 && day <= 31 && hour >=0 && hour <=23) {
 	     
 	    time(&rawtime);
+	    #ifndef CRON_USE_LOCAL_TIME
+	    current_time = *gmtime(&rawtime);
+	    #else
 	    current_time = *localtime(&rawtime);  /* this is to find out if isdst */
+	    #endif
 	    ts->tm_gmtoff = current_time.tm_gmtoff;
 	    ts->tm_zone = current_time.tm_zone;
 	    ts->tm_isdst = current_time.tm_isdst;  /* daylight savings */
@@ -163,7 +167,11 @@ int main(int argc, char *argv[]) {
     int daylight_savings;
 
     time(&rawtime);
+#ifndef CRON_USE_LOCAL_TIME
+    current_time = *gmtime(&rawtime);
+#else
     current_time = *localtime(&rawtime);
+#endif
     offset_from_gmt = current_time.tm_gmtoff;
     daylight_savings = current_time.tm_isdst;
 
@@ -192,7 +200,7 @@ int main(int argc, char *argv[]) {
 	printf("        This outputs: 1568948400 disable_wifi.sh\n");
 	printf("\n");
 	printf("        ./cron_last_epoch_time_this_line_was_supposedly_executed \"0 22 * * mon,tue,wed,thu,fri disable_wifi.sh\" 2019-02-08T12:11\n");
-        printf("        This outputs: 2019-02-07T21:00:00Z disable_wifi.sh\n");
+        printf("        This outputs: 2019-02-07T21:00:00 disable_wifi.sh\n");
 	exit(0);
     }
 
@@ -230,8 +238,12 @@ int main(int argc, char *argv[]) {
 		break;
 	    case 0 :
 		use_iso8601_datetime_format = 1;
-		cur = time(NULL);   
+		cur = time(NULL);
+#ifndef CRON_USE_LOCAL_TIME
+		ts = *gmtime(&cur);
+#else
 		ts = *localtime(&cur);
+#endif
 		ts.tm_sec = 0;
 		ts.tm_isdst = daylight_savings;
 		cur = mktime(&ts);
@@ -244,8 +256,12 @@ int main(int argc, char *argv[]) {
 	    }
 	} else {
 	    /* truncate seconds to 0 if current time*/
-	    cur = time(NULL);   
+	    cur = time(NULL);
+#ifndef CRON_USE_LOCAL_TIME
+	    ts = *gmtime(&cur);
+#else
 	    ts = *localtime(&cur);
+#endif
 	    ts.tm_sec = 0;
 	    ts.tm_isdst = daylight_savings;
 	    cur = mktime(&ts);
@@ -259,15 +275,20 @@ int main(int argc, char *argv[]) {
     cron_parse_expr(cron_line_schedule, &expr, &err);
 
     time_t prev = cron_prev(&expr, cur);  /* if you want next epoch time instead of previous, simply change cron_prev to cron_next  */
-    ts = *localtime(&prev);
 
+#ifndef CRON_USE_LOCAL_TIME
+    ts = *gmtime(&prev);
+#else
+    ts = *localtime(&prev);
+#endif
+    
     if (use_iso8601_datetime_format == 0) 
 	if (beginning_of_next_word_boundary != -1)
 	    printf("%lld %s\n", (long long) prev, cron_line_disposition);
 	else
 	    printf("%lld\n", (long long) prev);
     else {
-	strftime(strftime_result,100,"%FT%H:%M:00Z",&ts);
+	strftime(strftime_result,100,"%FT%H:%M:00",&ts);
 	if (beginning_of_next_word_boundary != -1)
 	    printf("%s %s\n", strftime_result, cron_line_disposition);
 	else
